@@ -4,18 +4,18 @@ pipeline {
      stages {
           stage('Build Docker Image') {
                steps {
-                    script{
+                    script {
                          dockerapp = docker.build("devpolatto/kube-news:1.0.${env.BUILD_ID}", '-f ./src/Dockerfile ./src')
                     }
                }
           }
 
-          stage('Push Docker Image') {
+          stage ('Push Docker Image') {
                steps {
                     script {
-                         docker.withRegistry('https://registry.hub.docker.com', 'dockerhub') {
-                              dockerapp.push('latest'),
-                              dockerapp.push("1.0.${env.BUILD_ID}"),
+                         withDockerRegistry('https://registry.hub.docker.com/','cred') {
+                              dockerapp.push('latest')
+                              dockerapp.push("1.0.${env.BUILD_ID}")
                          }
                     }
                }
