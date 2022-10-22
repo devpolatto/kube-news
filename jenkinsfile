@@ -13,10 +13,22 @@ pipeline {
           stage ('Push Docker Image') {
                steps {
                     script {
-                         withDockerRegistry( credentialsId: 'cred', url: 'https://registry.hub.docker.com/') {
+                        docker.withRegistry('https://registry.hub.docker.com', 'cred') {
                               dockerapp.push('latest')
                               dockerapp.push("1.0.${env.BUILD_ID}")
                          }
+                        //  withDockerRegistry( credentialsId: 'cred', url: 'https://registry.hub.docker.com/') {
+                        //       dockerapp.push('latest')
+                        //       dockerapp.push("${env.BUILD_ID}")
+                        //  }
+                    }
+               }
+          }
+
+          stage ('Deploy K8s') {
+               step {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                         sh 'kubectl apply -f ./k8s/deployment.yaml'
                     }
                }
           }
