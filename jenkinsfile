@@ -15,7 +15,7 @@ pipeline {
                     script {
                         docker.withRegistry('https://registry.hub.docker.com', 'cred') {
                               dockerapp.push('latest')
-                              dockerapp.push("1.0.${env.BUILD_ID}")
+                              dockerapp.push("{env.BUILD_ID}")
                          }
                         //  withDockerRegistry( credentialsId: 'cred', url: 'https://registry.hub.docker.com/') {
                         //       dockerapp.push('latest')
