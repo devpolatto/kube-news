@@ -52,7 +52,7 @@ spec:
     spec:
       containers:
         - name: web
-          image: devpolatto/kube-news:{{TAG}}
+          image: devpolatto/kube-news:latest
           ports:
           - containerPort: 8080
           env:
